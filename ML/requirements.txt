@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+sentence-transformers>=5.0.0
+setfit
+numpy>=1.17
+torch>=2.0.0
+transformers<5.0.0
