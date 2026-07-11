@@ -640,12 +640,12 @@ export default function ChatView({ projectId, projectMemberIds }: ChatViewProps)
                                     key={`${message.id}-${reaction.emoji}`}
                                     onClick={() => handleReaction(message.id, reaction.emoji)}
                                     className={`rounded-full border px-2 py-0.5 text-xs ${
-                                        reaction.userIds.includes(currentUser?.id || '')
+                                        (reaction.userIds || []).includes(currentUser?.id || '')
                                             ? 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
                                             : 'border-slate-200 bg-white/90 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
                                     }`}
                                 >
-                                    {reaction.emoji} {reaction.userIds.length}
+                                    {reaction.emoji} {(reaction.userIds || []).length}
                                 </button>
                             ))}
                         </div>

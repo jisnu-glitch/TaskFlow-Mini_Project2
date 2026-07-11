@@ -241,6 +241,8 @@ function toTimeEntry(dbEntry: DbTimeEntry): TimeEntry {
 import { getSupabase, DbUser, DbProject, DbTask, DbActivityLog, DbMessage, DbComment, DbForm, DbFormResponse, DbDocument, DbShortcut, DbRepoLink, DbNotification, DbDeployment, DbDeploymentTask, DbTimeEntry } from './supabase';
 import { Project, Task, User, ActivityLog, Message, Comment, Form, FormResponse, Document, Notification, Deployment, DeploymentTask, TimeEntry } from '@/types';
 
+import { isDemoMode, getDemoDb } from './demo-db';
+
 // Database class with async Supabase operations
 class Database {
     // Users
@@ -1883,4 +1885,15 @@ class Database {
     }
 }
 
-export const db = new Database();
+const realDb = new Database();
+export const db = new Proxy(realDb, {
+    get(target, prop, receiver) {
+        if (isDemoMode()) {
+            const demoDb = getDemoDb();
+            if (prop in demoDb) {
+                return Reflect.get(demoDb, prop, demoDb);
+            }
+        }
+        return Reflect.get(target, prop, receiver);
+    }
+});

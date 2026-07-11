@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow – AI‑Driven Project Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-grid-pattern {background-image: repeating-linear-gradient(45deg,rgba(0,0,0,.02) 0,rgba(0,0,0,.02) 1px,transparent 1px,transparent 60px);}
+    .selection\:bg-accent-green\/30 ::selection {background-color:#a8ff7830;}
+    .selection\:text-accent-green ::selection {color:#1a202c;}
+    .font-poppins {font-family:'Poppins',sans-serif;}
+  </style>
+</head>
+<body class="relative min-h-screen bg-[#f8f9fc] dark:bg-[#030303] overflow-x-hidden font-poppins selection:bg-accent-green/30 selection:text-accent-green">
+  <nav class="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 shadow">
+    <a href="/" class="text-2xl font-bold text-gray-900 dark:text-white">TaskFlow</a>
+    <div>
+      <a href="/setup" class="mr-4 text-gray-600 dark:text-gray-300 hover:underline">Setup</a>
+      <a href="/login" class="text-gray-600 dark:text-gray-300 hover:underline">Login</a>
+    </div>
+  </nav>
+  <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+    <div class="absolute inset-0 bg-grid-pattern bg-[size:60px_60px] opacity-[0.4] dark:opacity-[0.1]"></div>
+    <div class="absolute -top-[250px] -left-[150px] w-[700px] h-[700px] bg-accent-greenLight dark:bg-accent-green/5 blur-[140px] rounded-full"></div>
+    <div class="absolute -bottom-[200px] -right-[150px] w-[600px] h-[600px] bg-accent-leafLight dark:bg-accent-leaf/5 blur-[140px] rounded-full"></div>
+    <div class="absolute top-[40%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent-tealLight dark:bg-accent-teal/5 blur-[140px] rounded-full"></div>
+  </div>
+  <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 z-10 flex flex-col items-center text-center">
+    <div class="container max-w-7xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-accent-greenLight dark:bg-accent-green/10 border border-accent-green/10 text-accent-green text-xs font-bold uppercase tracking-widest mb-10 shadow-sm">
+        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-leaf opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-accent-leaf"></span></span>
+        <span>Powered by Machine Learning</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white leading-[1.1] tracking-tighter mb-8">
+        Manage Projects with <br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-accent-blue to-accent-leaf">AI-Driven Intelligence</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+        TaskFlow is a next‑generation project management platform that combines intuitive Kanban workflows with ML‑powered recommendations, bottleneck detection, and wellness monitoring.
+      </p>
+      <a href="/setup" class="group relative w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-accent-green to-[#9d7dff] text-white rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-accent-green/20">
+        Get Started
+        <svg class="inline-block ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <div class="relative mt-20 perspective-1000">
+        <div class="absolute -inset-1 bg-gradient-to-r from-accent-green via-accent-blue to-accent-leaf rounded-[2.5rem] blur-2xl opacity-20 dark:opacity-40 animate-pulse"></div>
+        <img src="/hero-dashboard.png" alt="TaskFlow Dashboard" class="relative w-full max-w-[1000px] mx-auto rounded-3xl border border-white/20 shadow-2xl transform rotate-x-2" />
+      </div>
+    </div>
+  </section>
+  <section class="relative py-20 border-y border-gray-100 dark:border-white/5 bg-white/40 dark:bg-black/40 backdrop-blur-md z-10">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+        <div class="space-y-2"><h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-accent-green to-accent-blue">3</h3><p class="text-sm font-bold text-gray-400 uppercase tracking-widest">ML Models Trained</p></div>
+        <div class="space-y-2"><h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-accent-blue to-accent-leaf">6+</h3><p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Integrated Views</p></div>
+        <div class="space-y-2"><h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-accent-leaf to-accent-teal">Real-time</h3><p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Team Collaboration</p></div>
+        <div class="space-y-2"><h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-accent-teal to-accent-green">95%</h3><p class="text-sm font-bold text-gray-400 uppercase tracking-widest">ML Insight Coverage</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="features" class="py-32 relative z-10 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20 space-y-4"><span class="text-accent-green font-bold tracking-[0.2em] uppercase text-xs">Core Features</span><h2 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter">Everything Your Team Needs</h2><p class="text-gray-500 dark:text-gray-400 font-medium max-w-xl mx-auto">From Kanban boards to AI insights — one platform to manage it all.</p></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="group p-10 bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-[2.5rem] hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-green/5 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-gradient-to-br from-accent-green to-[#9d7dff] text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/></svg></div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">Kanban Task Board</h3>
+          <p class="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">Drag‑and‑drop task management with customizable columns, priority tags, and real‑time status tracking.</p>
+        </div>
+        <div class="group p-10 bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-[2.5rem] hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-green/5 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-gradient-to-br from-accent-leaf to-accent-teal text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">ML Recommendations</h3>
+          <p class="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">TypeScript‑powered priority classification and skill‑based task assignment that adapts to team patterns.</p>
+        </div>
+        <div class="group p-10 bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-[2.5rem] hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-green/5 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-gradient-to-br from-accent-teal to-[#ff7eb3] text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg></div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">Bottleneck Detection</h3>
+          <p class="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">Automatic identification of workflow blockers and aging tasks with actionable rebalancing suggestions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="ai" class="py-32 px-6 relative z-10">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div class="space-y-8"><div class="flex items-center gap-3 text-accent-green"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-2.21 0-4 .896-4 2s1.79 2 4 2 4-.896 4-2-1.79-2-4-2z"/></svg><span class="font-bold uppercase tracking-widest text-sm">AI‑Powered Engine</span></div><h3 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter leading-tight">Smart Recommendations <br/>That Actually Work</h3><p class="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Our ML pipeline now runs inside the app with TypeScript scoring, skill matching, clustering, and wellness heuristics in real time.</p><ul class="space-y-4"><li class="flex items-center gap-4 text-gray-600 dark:text-gray-300 font-medium"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" class="text-accent-leaf"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Critical task priority detection with 95% accuracy</li><li class="flex items-center gap-4 text-gray-600 dark:text-gray-300 font-medium"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" class="text-accent-leaf"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Skill‑based task‑to‑member matching</li><li class="flex items-center gap-4 text-gray-600 dark:text-gray-300 font-medium"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" class="text-accent-leaf"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Proactive burnout and overload alerts</li><li class="flex items-center gap-4 text-gray-600 dark:text-gray-300 font-medium"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" class="text-accent-leaf"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Company‑size adaptive thresholds</li></ul></div>
+        <div class="relative group"><div class="absolute inset-0 bg-accent-green/20 blur-[100px] rounded-full opacity-50 group-hover:opacity-100 transition-opacity"></div><img src="/ai-showcase.png" alt="AI Feature Showcase" class="relative rounded-[2.5rem] border border-white/20 shadow-2xl z-20" /></div>
+      </div>
+    </div>
+  </section>
+  <footer class="py-20 border-t border-gray-100 dark:border-white/5 text-center"><div class="container max-w-7xl mx-auto px-6"><p class="text-gray-400 font-bold flex items-center justify-center gap-2">© 2026 TaskFlow. Built with <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16" class="text-accent-teal fill-accent-teal"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> using Next.js, Supabase & Machine Learning.</p></div></footer>
+</body>
+</html>

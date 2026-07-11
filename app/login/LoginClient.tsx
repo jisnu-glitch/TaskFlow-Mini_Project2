@@ -17,6 +17,8 @@ import { Modal } from '@/components/ui/Modal';
 import 'altcha';
 import { apiFetch } from '@/lib/api/fetchWithSupabase';
 
+import { isDemoMode } from '@/lib/demo-db';
+
 export default function LoginClient() {
   const { currentUser, isLoading, authError, setAuthError } = useAuth();
   const router = useRouter();
@@ -159,6 +161,10 @@ export default function LoginClient() {
   }, []);
 
   useEffect(() => {
+    if (isDemoMode()) {
+      router.replace('/dashboard');
+      return;
+    }
     // Log whether Supabase client config is available on the client.
     try {
       const vals = resolveClientEnvValues();
@@ -184,7 +190,7 @@ export default function LoginClient() {
     } catch (e) {
       console.debug('[Env] Error checking Supabase client config', e);
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (!isLoading && currentUser) {

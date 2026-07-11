@@ -12,6 +12,7 @@ import { db } from '@/lib/db';
 import { TimerRunningIndicator } from '@/components/TimerRunningIndicator';
 import { TimerProvider } from '@/contexts/TimerContext';
 import { hasClientSupabaseConfig } from '@/lib/browser-supabase-config';
+import { isDemoMode } from '@/lib/demo-db';
 
 interface AuthenticatedLayoutProps {
     children: ReactNode;
@@ -33,7 +34,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
     const router = useRouter();
     const pathname = usePathname();
     const requiresSupabaseConfig = pathname !== '/' && pathname !== '/setup' && pathname !== '/landing';
-    const hasSupabaseConfig = hasClientSupabaseConfig();
+    const hasSupabaseConfig = hasClientSupabaseConfig() || isDemoMode();
 
     // Search state
     const [searchQuery, setSearchQuery] = useState('');

@@ -20,7 +20,9 @@ import {
   Shield,
   SlidersHorizontal,
   UserPlus,
+  Sparkles,
 } from 'lucide-react';
+import { enableDemoMode } from '@/lib/demo-db';
 import { getSiteUrl } from '@/lib/site-url';
 import {
   getCachedDeviceEnvValues,
@@ -172,6 +174,11 @@ export default function SetupPage() {
       setStatusMessage('Device vault already unlocked for this browser session.');
     }
   }, []);
+
+  const handleStartDemoMode = () => {
+    enableDemoMode();
+    window.location.assign('/dashboard');
+  };
 
   const requiredReady = useMemo(
     () => Boolean(values.SUPABASE_URL && values.SUPABASE_ANON_KEY && values.SUPABASE_ACCESS_TOKEN),
@@ -459,7 +466,16 @@ export default function SetupPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#e8fff5_0,#f7f9fc_38%,#f8f9fc_100%)] px-4 py-8 font-poppins text-gray-950 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-[radial-gradient(circle_at_top_left,#e8fff5_0,#f7f9fc_38%,#f8f9fc_100%)] px-4 py-8 font-poppins text-gray-950 sm:px-6 lg:px-8 overflow-hidden">
+      <button
+        type="button"
+        onClick={handleStartDemoMode}
+        className="absolute top-8 right-0 flex items-center gap-2 rounded-l-2xl border border-r-0 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 px-5 py-2.5 text-xs font-black text-blue-700 hover:text-blue-800 transition-colors shadow-sm"
+      >
+        <Sparkles size={14} />
+        Try Dashboard with Demo Data (No Setup Needed)
+      </button>
+
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -571,6 +587,8 @@ export default function SetupPage() {
                   {status === 'loading' ? <Loader2 size={18} className="animate-spin" /> : <LockKeyhole size={18} />}
                     Create tables, save keys, and go to Step 2
                 </button>
+
+
 
                 {hasStoredVault && (
                   <button

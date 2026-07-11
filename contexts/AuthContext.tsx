@@ -11,6 +11,8 @@ import {
   pendingFirstAdminMatches,
 } from '@/lib/first-admin-setup';
 
+import { isDemoMode, getDemoDb, disableDemoMode } from '@/lib/demo-db';
+
 interface AuthContextType {
   currentUser: User | null;
   users: User[];
@@ -73,6 +75,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const loadSession = async () => {
       try {
+        if (isDemoMode()) {
+          const demoDb = getDemoDb();
+          const allUsers = await demoDb.getUsers();
+          const admin = allUsers.find(u => u.id === 'demo-admin-id') || null;
+          setCurrentUser(admin);
+          setUsers(allUsers);
+          setIsLoading(false);
+          return;
+        }
+
         if (!hasClientSupabaseConfig()) {
           setCurrentUser(null);
           setIsLoading(false);
@@ -277,6 +289,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     console.log('[Logout] Initiating logout process');
     setIsLoggingOut(true);
+
+    if (isDemoMode()) {
+      disableDemoMode();
+      setCurrentUser(null);
+      setIsLoggingOut(false);
+      window.location.assign('/setup');
+      return;
+    }
+
     // Instantly clear user state and stop loading
     setCurrentUser(null);
     setIsLoggingOut(false);

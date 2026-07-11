@@ -1,6 +1,22 @@
 import { resolveClientEnvValues, getCachedDeviceEnvValues } from '@/lib/device-env-vault';
+import { isDemoMode, handleDemoApiRequest } from '@/lib/demo-db';
 
 export async function apiFetch(input: RequestInfo, init?: RequestInit) {
+  if (isDemoMode()) {
+    const url = typeof input === 'string' ? input : (input as Request).url;
+    try {
+      const mockResult = await handleDemoApiRequest(url, init);
+      if (mockResult !== null) {
+        return new Response(JSON.stringify(mockResult), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    } catch (e) {
+      console.error('Error handling mock API request:', e);
+    }
+  }
+
   const origHeaders = new Headers(init?.headers as HeadersInit || {});
 
   const env = resolveClientEnvValues();
