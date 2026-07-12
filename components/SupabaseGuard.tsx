@@ -22,8 +22,13 @@ export function SupabaseGuard({ children }: { children: React.ReactNode }) {
   const isLanding = typeof window !== 'undefined' && window.location.pathname === '/landing';
 
   useEffect(() => {
-    if (isLanding) { setState('ready'); return; }
-    setState(hasClientSupabaseConfig() ? 'ready' : 'missing');
+    try {
+      if (isLanding) { setState('ready'); return; }
+      setState(hasClientSupabaseConfig() ? 'ready' : 'missing');
+    } catch (err) {
+      console.error('SupabaseGuard initialization error:', err);
+      setState('missing');
+    }
   }, [isLanding]);
 
   const handleConnect = async () => {

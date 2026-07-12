@@ -48,14 +48,15 @@ function toArrayBuffer(bytes: Uint8Array) {
 function normalizeEnvValues(
   values: Partial<DeviceEnvValues> | null | undefined
 ): DeviceEnvValues {
+  const getStr = (val: any) => typeof val === 'string' ? val.trim() : '';
   return {
-    SUPABASE_URL: values?.SUPABASE_URL?.trim() ?? '',
-    SUPABASE_ANON_KEY: values?.SUPABASE_ANON_KEY?.trim() ?? '',
-    SUPABASE_ACCESS_TOKEN: values?.SUPABASE_ACCESS_TOKEN?.trim() ?? '',
-    GITHUB_ACCESS_TOKEN: values?.GITHUB_ACCESS_TOKEN?.trim() ?? '',
-    ALTCHA_HMAC_SECRET: values?.ALTCHA_HMAC_SECRET?.trim() ?? '',
-    ALTCHA_HMAC_KEY_SECRET: values?.ALTCHA_HMAC_KEY_SECRET?.trim() ?? '',
-    INDIEPITCHER_API_KEY: values?.INDIEPITCHER_API_KEY?.trim() ?? '',
+    SUPABASE_URL: getStr(values?.SUPABASE_URL),
+    SUPABASE_ANON_KEY: getStr(values?.SUPABASE_ANON_KEY),
+    SUPABASE_ACCESS_TOKEN: getStr(values?.SUPABASE_ACCESS_TOKEN),
+    GITHUB_ACCESS_TOKEN: getStr(values?.GITHUB_ACCESS_TOKEN),
+    ALTCHA_HMAC_SECRET: getStr(values?.ALTCHA_HMAC_SECRET),
+    ALTCHA_HMAC_KEY_SECRET: getStr(values?.ALTCHA_HMAC_KEY_SECRET),
+    INDIEPITCHER_API_KEY: getStr(values?.INDIEPITCHER_API_KEY),
   };
 }
 

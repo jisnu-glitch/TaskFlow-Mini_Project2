@@ -10,8 +10,8 @@ export type BrowserSupabaseConfig = {
 };
 
 function normalizeConfig(config: Partial<BrowserSupabaseConfig> | null | undefined) {
-  const url = config?.url?.trim();
-  const anonKey = config?.anonKey?.trim();
+  const url = typeof config?.url === 'string' ? config.url.trim() : '';
+  const anonKey = typeof config?.anonKey === 'string' ? config.anonKey.trim() : '';
 
   if (!url || !anonKey) {
     return null;

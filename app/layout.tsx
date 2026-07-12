@@ -4,6 +4,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthenticatedLayout } from '@/components/AuthenticatedLayout';
 import { SupabaseGuard } from '@/components/SupabaseGuard';
+import OllamaChatBubble from '@/components/OllamaChatBubble';
 
 const poppins = Poppins({ 
   weight: ['400', '500', '600', '700'],
@@ -31,6 +32,7 @@ export default function RootLayout({
               <AuthenticatedLayout>
                 {children}
               </AuthenticatedLayout>
+              <OllamaChatBubble />
             </AuthProvider>
           </ThemeProvider>
         </SupabaseGuard>
