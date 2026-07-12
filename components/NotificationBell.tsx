@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { formatDistanceToNow } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { getSupabase } from '@/lib/supabase';
+import { isDemoMode } from '@/lib/demo-db';
 import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import { db } from '@/lib/db';
 
@@ -82,6 +83,9 @@ export function NotificationBell() {
 
         // Fetch initial notifications
         fetchNotifications();
+
+        // Skip realtime subscription in demo mode
+        if (isDemoMode()) return;
 
         // Subscribe to changes
         const supabase = getSupabase();

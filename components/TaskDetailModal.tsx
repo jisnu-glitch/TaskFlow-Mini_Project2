@@ -10,6 +10,7 @@ import { CustomSelect, SelectOption } from './ui/CustomSelect';
 import { PRIORITY_COLORS, STATUS_COLORS } from '@/lib/constants';
 import { getUserName, getActionDisplay } from '@/lib/utils';
 import { getSupabase } from '@/lib/supabase';
+import { isDemoMode } from '@/lib/demo-db';
 import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import { db } from '@/lib/db';
 
@@ -72,6 +73,9 @@ export function TaskDetailModal({ task, isOpen, onClose, onUpdate, onDelete, pro
         fetchTimeEntries(task.id);
         fetchDeployments(task.id);
         fetchProjectTasks(task.projectId);
+
+        // Skip realtime subscription in demo mode
+        if (isDemoMode()) return;
 
         const supabase = getSupabase();
         const channel = supabase

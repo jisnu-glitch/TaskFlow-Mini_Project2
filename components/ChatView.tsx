@@ -30,6 +30,7 @@ import { MiniCalendar } from '@/components/ui/MiniCalendar';
 import { useAuth } from '@/contexts/AuthContext';
 import { formatFileSize } from '@/lib/utils';
 import { getSupabase } from '@/lib/supabase';
+import { isDemoMode } from '@/lib/demo-db';
 import { db } from '@/lib/db';
 import { apiFetch } from '@/lib/api/fetchWithSupabase';
 
@@ -118,7 +119,7 @@ export default function ChatView({ projectId, projectMemberIds }: ChatViewProps)
     const [showForwardModal, setShowForwardModal] = useState(false);
 
     useEffect(() => {
-        if (!currentUser) return;
+        if (!currentUser || isDemoMode()) return;
 
         const supabase = getSupabase();
         const channel = supabase.channel('online-users', {
@@ -206,6 +207,7 @@ export default function ChatView({ projectId, projectMemberIds }: ChatViewProps)
     }, [activeConversationId, projectId, currentUser?.id]);
 
     useEffect(() => {
+        if (isDemoMode()) return;
         const supabase = getSupabase();
         const channel = supabase
             .channel(`messages-${projectId}-${currentUser?.id || 'guest'}`)

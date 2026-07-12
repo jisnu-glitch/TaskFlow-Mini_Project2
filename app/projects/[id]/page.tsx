@@ -22,6 +22,7 @@ import VideoRoom from '@/components/VideoRoom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Video, Folder, FileText, BarChart3, Plus, UserPlus, Check, Rocket, Calendar, PieChart } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
+import { isDemoMode } from '@/lib/demo-db';
 import { db } from '@/lib/db';
 
 // Nav Items definition
@@ -161,7 +162,7 @@ export default function ProjectPage() {
     }, [id, currentUser?.id]);
 
     useEffect(() => {
-        if (!id || !currentUser?.id) return;
+        if (!id || !currentUser?.id || isDemoMode()) return;
 
         // Subscribe to tasks
         const supabase = getSupabase();
