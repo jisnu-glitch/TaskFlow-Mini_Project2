@@ -7,7 +7,8 @@ import {
   saveSessionDeviceEnvValues,
 } from '@/lib/device-env-vault';
 import { resetSupabaseClient } from '@/lib/supabase';
-import { Database, Eye, EyeOff, Globe, Loader2, LockKeyhole } from 'lucide-react';
+import { Database, Eye, EyeOff, Globe, Loader2, LockKeyhole, Sparkles } from 'lucide-react';
+import { enableDemoMode } from '@/lib/demo-db';
 
 export function SupabaseGuard({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<'loading' | 'ready' | 'missing'>('loading');
@@ -17,6 +18,11 @@ export function SupabaseGuard({ children }: { children: React.ReactNode }) {
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+
+  const handleStartDemoMode = () => {
+    enableDemoMode();
+    window.location.assign('/dashboard');
+  };
 
   // Bypass for public marketing page
   const isLanding = typeof window !== 'undefined' && window.location.pathname === '/landing';
@@ -74,7 +80,15 @@ export function SupabaseGuard({ children }: { children: React.ReactNode }) {
 
   if (state === 'missing') {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,#e8fff5_0,#f7f9fc_38%,#f8f9fc_100%)] p-4">
+      <div className="relative flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,#e8fff5_0,#f7f9fc_38%,#f8f9fc_100%)] p-4 overflow-hidden">
+        <button
+          type="button"
+          onClick={handleStartDemoMode}
+          className="absolute top-8 right-0 flex items-center gap-2 rounded-l-2xl border border-r-0 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 px-5 py-2.5 text-xs font-black text-blue-700 hover:text-blue-800 transition-colors shadow-sm z-10"
+        >
+          <Sparkles size={14} />
+          Try Dashboard with Demo Data (No Setup Needed)
+        </button>
         <div className="w-full max-w-md rounded-[32px] border border-white/80 bg-white/85 p-6 shadow-[0_26px_90px_rgba(15,23,42,0.09)] backdrop-blur sm:p-7">
           <div className="mb-6 text-center">
             <div className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#3ecf8e]/25 bg-white/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#119c67] shadow-sm">
