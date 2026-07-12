@@ -8,7 +8,7 @@ import {
 } from '@/lib/device-env-vault';
 import { resetSupabaseClient } from '@/lib/supabase';
 import { Database, Eye, EyeOff, Globe, Loader2, LockKeyhole, Sparkles } from 'lucide-react';
-import { enableDemoMode } from '@/lib/demo-db';
+import { enableDemoMode, isDemoMode } from '@/lib/demo-db';
 
 export function SupabaseGuard({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<'loading' | 'ready' | 'missing'>('loading');
@@ -29,7 +29,7 @@ export function SupabaseGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      if (isLanding) { setState('ready'); return; }
+      if (isLanding || isDemoMode()) { setState('ready'); return; }
       setState(hasClientSupabaseConfig() ? 'ready' : 'missing');
     } catch (err) {
       console.error('SupabaseGuard initialization error:', err);
