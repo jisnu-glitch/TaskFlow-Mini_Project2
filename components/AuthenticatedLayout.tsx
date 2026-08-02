@@ -262,7 +262,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
                                             </div>
                                         ) : searchResults.length === 0 ? (
                                             <div className="p-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                No results found for "{searchQuery}"
+                                                No results found for &quot;{searchQuery}&quot;
                                             </div>
                                         ) : (
                                             <div className="py-1">

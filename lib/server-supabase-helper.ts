@@ -5,11 +5,8 @@ type ReqLike = { headers?: { get: (name: string) => string | null } } | { header
 
 function getHeader(req: ReqLike, name: string): string | null {
   if (!req || !req.headers) return null;
-  // NextRequest.headers has .get, Node Headers also has .get
-  // @ts-ignore
-  if (typeof req.headers.get === 'function') return req.headers.get(name);
+  const h = req.headers as { get: (n: string) => string | null };
   try {
-    const h = req.headers as Headers;
     return h.get(name);
   } catch {
     return null;

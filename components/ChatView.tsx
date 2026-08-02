@@ -1118,7 +1118,7 @@ export default function ChatView({ projectId, projectMemberIds }: ChatViewProps)
                         
                         <div className="mb-6 rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                             <p className="line-clamp-3 text-sm text-slate-600 dark:text-slate-400 italic">
-                                "{forwardingMessage?.content}"
+                                &quot;{forwardingMessage?.content}&quot;
                             </p>
                         </div>
 

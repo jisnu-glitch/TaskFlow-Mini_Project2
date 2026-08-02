@@ -591,7 +591,7 @@ export function TaskDetailModal({ task, isOpen, onClose, onUpdate, onDelete, pro
                                         </div>
                                         <p className="text-sm text-gray-600 dark:text-gray-300">
                                             {entry.endTime ? `Logged ${entry.durationMinutes} minutes` : 'Timer still active...'}
-                                            {entry.note && <span className="block italic text-gray-400">"{entry.note}"</span>}
+                                            {entry.note && <span className="block italic text-gray-400">&quot;{entry.note}&quot;</span>}
                                         </p>
                                     </div>
                                 ))}

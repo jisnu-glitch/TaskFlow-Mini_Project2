@@ -726,7 +726,7 @@ export default function SetupPage() {
                       Enable {adminProvider === 'google' ? 'Google' : 'GitHub'} in Supabase first
                     </p>
                     <p className="mt-1 leading-relaxed">
-                      Go to Supabase Dashboard - Authentication - Providers, enable {adminProvider === 'google' ? 'Google' : 'GitHub'}, and add that provider's client ID and secret. Otherwise Supabase returns "Unsupported provider".
+                      Go to Supabase Dashboard - Authentication - Providers, enable {adminProvider === 'google' ? 'Google' : 'GitHub'}, and add that provider&apos;s client ID and secret. Otherwise Supabase returns &quot;Unsupported provider&quot;.
                     </p>
                     <label className="mt-3 flex items-start gap-2 font-semibold">
                       <input

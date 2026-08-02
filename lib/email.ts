@@ -1,12 +1,23 @@
 import { IndiePitcher } from 'indiepitcher';
 
-const indiePitcher = new IndiePitcher(process.env.INDIEPITCHER_API_KEY || 'sc_7712638fe25f9ed83061da2632e6f42441a084c1de1df080b3dbf608c64b3d50');
+const indiePitcher = process.env.INDIEPITCHER_API_KEY
+  ? new IndiePitcher(process.env.INDIEPITCHER_API_KEY)
+  : null;
+
+function isEmailAvailable() {
+  return indiePitcher !== null;
+}
 
 export async function sendOTPEmail(to: string, otp: string) {
     try {
+        if (!isEmailAvailable()) {
+            console.warn('[Email] INDIEPITCHER_API_KEY not set; skipping OTP email.');
+            return { success: false, skipped: true };
+        }
+
         console.log(`[Email] Sending OTP ${otp} to ${to} via IndiePitcher...`);
 
-        await indiePitcher.sendEmail({
+        await indiePitcher!.sendEmail({
             to: to,
             subject: 'User Deletion Verification Code',
             body: `
@@ -34,7 +45,12 @@ This code will expire in 5 minutes. If you did not request this deletion, please
 
 export async function sendProjectMemberAdded(to: string, projectName: string, addedBy?: string, projectLink?: string) {
     try {
-        await indiePitcher.sendEmail({
+        if (!isEmailAvailable()) {
+            console.warn('[Email] INDIEPITCHER_API_KEY not set; skipping project-added email.');
+            return { success: false, skipped: true };
+        }
+
+        await indiePitcher!.sendEmail({
             to,
             subject: `Added to project: ${projectName}`,
             body: `
@@ -58,7 +74,12 @@ ${projectLink ? `Open the project: ${projectLink}` : ''}
 
 export async function sendProjectMemberRemoved(to: string, projectName: string, removedBy?: string) {
     try {
-        await indiePitcher.sendEmail({
+        if (!isEmailAvailable()) {
+            console.warn('[Email] INDIEPITCHER_API_KEY not set; skipping project-removed email.');
+            return { success: false, skipped: true };
+        }
+
+        await indiePitcher!.sendEmail({
             to,
             subject: `Removed from project: ${projectName}`,
             body: `
@@ -88,7 +109,12 @@ export async function sendTaskAssigned(
     taskLink: string
 ) {
     try {
-        await indiePitcher.sendEmail({
+        if (!isEmailAvailable()) {
+            console.warn('[Email] INDIEPITCHER_API_KEY not set; skipping task-assigned email.');
+            return { success: false, skipped: true };
+        }
+
+        await indiePitcher!.sendEmail({
             to,
             subject: `Task assigned to you: ${taskTitle}`,
             body: `
@@ -121,7 +147,12 @@ export async function sendTaskSwapped(
     taskLink: string
 ) {
     try {
-        await indiePitcher.sendEmail({
+        if (!isEmailAvailable()) {
+            console.warn('[Email] INDIEPITCHER_API_KEY not set; skipping task-swapped email.');
+            return { success: false, skipped: true };
+        }
+
+        await indiePitcher!.sendEmail({
             to,
             subject: `Your task has been reassigned: ${taskTitle}`,
             body: `

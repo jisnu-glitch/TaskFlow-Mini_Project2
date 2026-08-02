@@ -816,7 +816,7 @@ class Database {
 
         const taskIds = (tasks || []).map(t => t.id);
 
-        let orQueryParts = [];
+        const orQueryParts = [];
         if (projectIds.length > 0) {
             orQueryParts.push(`and(entity_type.eq.Project,entity_id.in.(${projectIds.join(',')}))`);
         }

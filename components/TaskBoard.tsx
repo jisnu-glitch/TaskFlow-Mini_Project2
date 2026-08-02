@@ -117,7 +117,7 @@ export function TaskBoard({ tasks, onTaskMove }: TaskBoardProps) {
         sideEffects: defaultDropAnimationSideEffects({
             styles: {
                 active: {
-                    // @ts-ignore
+                    
                     opacity: '0.5',
                 },
             },

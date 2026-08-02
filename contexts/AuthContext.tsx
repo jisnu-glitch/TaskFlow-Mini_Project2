@@ -185,11 +185,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loadProfile = async (userId: string, email: string | null, provider?: string) => {
     const supabase = getSupabase();
     console.log('[SignIn] Loading profile for user:', userId);
-    let { data, error } = await supabase
+    const { data: profileResult, error } = await supabase
       .from('users')
       .select('*')
       .eq('id', userId)
       .single<ProfileRow>();
+    let data: ProfileRow | null = profileResult;
 
     if (error) {
       console.error('[SignIn] Error loading user profile:', error);

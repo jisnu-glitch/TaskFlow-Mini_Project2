@@ -390,7 +390,7 @@ export default function ProjectPage() {
             </div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Access Denied or Project Not Found</h1>
             <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">
-                You don't have permission to view this project, or it doesn't exist.
+                You don&apos;t have permission to view this project, or it doesn&apos;t exist.
                 You will be redirected to the dashboard in a few seconds...
             </p>
             <button

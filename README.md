@@ -4,7 +4,7 @@ TaskFlow is a Next.js project management workspace with Supabase-backed auth/dat
 
 ## Current App Surface
 
-- Public landing page at `/`
+- Public landing page at `/landing` (root `/` serves the login page)
 - Guided Supabase credential setup at `/setup`
 - ALTCHA-gated auth at `/login`
 - Authenticated home at `/dashboard`
@@ -38,7 +38,7 @@ Inside a project, the current UI includes:
 | State/Contexts | Custom React contexts for auth, theme, and timers |
 | Data/Auth | Supabase |
 | CAPTCHA | ALTCHA |
-| ML | In-app TypeScript engine plus `@xenova/transformers` |
+| ML | In-app TypeScript engine plus HuggingFace Inference API with deterministic fallback |
 | Charts | Recharts |
 | Motion | Framer Motion |
 | Drag and Drop | `@dnd-kit/*` |
@@ -130,7 +130,7 @@ Optional variables may still be useful depending on the flows you use:
 ### Install
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Run the app
@@ -152,8 +152,7 @@ Recommended first-run flow:
 ## Database and Supabase Notes
 
 - Runtime Supabase access lives in [`lib/supabase.ts`](./lib/supabase.ts).
-- The repository still contains a top-level `supabase/` folder for migration/history material when present locally, but the app runtime depends on the client/config in `lib/`, not on that folder itself.
-- The checked-in `.gitignore` currently ignores `/supabase`, so migration files may exist locally without being committed.
+- The database schema (tables and RPCs) is defined inline in the `/setup` schema endpoint and can be applied from the setup flow using a Supabase access token.
 - Auth redirect URL resolution is handled through [`lib/site-url.ts`](./lib/site-url.ts).
 
 ## ML Runtime Notes
@@ -166,15 +165,15 @@ Recommended first-run flow:
 ## Scripts
 
 ```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
 ```
 
 ## Known Repo Notes
 
-- `npm run lint` may be noisy if local repo state references paths that are no longer present.
+- `pnpm lint` reports warnings for unused variables and effect dependencies, but no blocking errors.
 - The settings Env Vault is frontend-only and stores encrypted values in local browser storage on the current device.
 - Some helper/setup copy in the UI still assumes a local open-source/self-hosted style workflow around Supabase credentials.
 

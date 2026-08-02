@@ -2,6 +2,7 @@ import { Task } from '@/types';
 import { NextResponse } from 'next/server';
 import { sendTaskAssigned, sendTaskSwapped } from '@/lib/email';
 import { getSupabaseForRequest } from '@/lib/server-supabase-helper';
+import { getSiteUrl } from '@/lib/site-url';
 
 export async function GET(request: Request) {
     try {
@@ -144,7 +145,7 @@ export async function POST(request: Request) {
                         newTask.title,
                         project?.name || 'a project',
                         requestUserData.name,
-                        `${process.env.NEXT_PUBLIC_APP_URL || ''}/projects/${body.projectId}?task=${newTask.id}`
+                        getSiteUrl(`/projects/${body.projectId}?task=${newTask.id}`)
                     ).catch(e => console.error('Task assigned email error:', e));
                 }
             }
@@ -240,7 +241,7 @@ export async function PATCH(request: Request) {
             // Notify new assignee if it's someone else
             if (updates.assigneeId !== userId) {
                 const { data: project } = await supabase2.from('projects').select('*').eq('id', existingTask.projectId).maybeSingle();
-                const taskLink = `${process.env.NEXT_PUBLIC_APP_URL || ''}/projects/${existingTask.projectId}?task=${updatedTask.id}`;
+                const taskLink = getSiteUrl(`/projects/${existingTask.projectId}?task=${updatedTask.id}`);
                 await supabase2.from('notifications').insert({
                     user_id: updates.assigneeId,
                     type: 'task_assigned',
