@@ -29,7 +29,7 @@ async function hfInfer<T>(model: string, body: unknown): Promise<T | null> {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(20000),
+            signal: AbortSignal.timeout(8000),
         });
 
         if (!res.ok) {

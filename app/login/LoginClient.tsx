@@ -32,6 +32,7 @@ export default function LoginClient() {
   const [submitting, setSubmitting] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState<string | null>(null);
   const [altchaVerified, setAltchaVerified] = useState(false);
+  const [altchaDisabled, setAltchaDisabled] = useState(false);
   const [supabaseConfigModalOpen, setSupabaseConfigModalOpen] = useState(false);
   const [supabaseConfigNotice, setSupabaseConfigNotice] = useState('');
   const [supabaseConfigError, setSupabaseConfigError] = useState('');
@@ -192,6 +193,23 @@ export default function LoginClient() {
     }
   }, [searchParams, router]);
 
+  // Detect whether ALTCHA is disabled (no server secret) so auth still works.
+  useEffect(() => {
+    let cancelled = false;
+    apiFetch('/api/altcha/challenge')
+      .then(res => res.json().catch(() => null))
+      .then(data => {
+        if (!cancelled && data?.disabled) {
+          setAltchaDisabled(true);
+          setAltchaVerified(true);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   useEffect(() => {
     if (!isLoading && currentUser) {
       const next = searchParams.get('next');
@@ -237,6 +255,8 @@ export default function LoginClient() {
   };
 
   const verifyAltcha = async () => {
+    if (altchaDisabled) return true;
+
     let payload = getAltchaPayload();
 
     if (!payload && altchaVerified) {
@@ -564,15 +584,17 @@ export default function LoginClient() {
           </div>
 
           <div>
-            <altcha-widget
-              ref={altchaRef}
-              challenge="/api/altcha/challenge"
-              type="checkbox"
-              auto="off"
-              configuration='{"hideFooter":true}'
-              className="block w-full rounded-[15px] shadow-sm ring-1 ring-blue-100"
-              style={altchaWidgetStyle}
-            />
+            {!altchaDisabled && (
+              <altcha-widget
+                ref={altchaRef}
+                challenge="/api/altcha/challenge"
+                type="checkbox"
+                auto="off"
+                configuration='{"hideFooter":true}'
+                className="block w-full rounded-[15px] shadow-sm ring-1 ring-blue-100"
+                style={altchaWidgetStyle}
+              />
+            )}
           </div>
 
           {error && (
@@ -589,7 +611,7 @@ export default function LoginClient() {
 
           <button
             type="submit"
-            disabled={submitting || !altchaVerified}
+            disabled={submitting || !(altchaVerified || altchaDisabled)}
             className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
           >
             {submitting ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}

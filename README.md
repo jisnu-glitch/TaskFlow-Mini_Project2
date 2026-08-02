@@ -119,13 +119,32 @@ Optional variables may still be useful depending on the flows you use:
 - `NEXT_PUBLIC_VERCEL_URL` when running on Vercel
 - SMTP-related variables if you wire up email delivery for OTP/member notifications
 
+## Bring Your Own Supabase (per-user)
+
+TaskFlow is multi-tenant by design: every user connects **their own** Supabase
+project from the browser. No central app database is required.
+
+1. Open the app — you'll see the **Connect Supabase** screen.
+2. Enter your **Project URL** and **anon key** (Settings → API in your Supabase
+   dashboard).
+3. On the very first connect, TaskFlow detects that the tables are missing and
+   asks for a one-time **access token** (Dashboard → Account → Access Tokens →
+   Generate new token). It uses the token to create the tables automatically
+   (`users`, `projects`, `tasks`, and more via `/api/setup/schema`), then drops it.
+4. You're signed in. Keys live only in your browser — they are never stored on
+   our servers.
+
+Once the tables exist, returning users only need their URL + anon key. Each
+user's API calls are served by their own project (server routes honor the
+per-request tenant keys before any global configuration).
+
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
 - npm
-- A Supabase project with the tables/RPCs this app expects
+- A Supabase project (or use the automatic table creation during connect)
 
 ### Install
 
@@ -141,13 +160,14 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-Recommended first-run flow:
+First-run flow (per user):
 
-1. Add the required variables to `.env.local`.
-2. Start the dev server.
-3. Open `/setup` to validate the Supabase URL and anon key.
-4. Apply the SQL you need in your Supabase project.
-5. Continue to `/login` and sign in.
+1. Open the app and connect your Supabase URL + anon key.
+2. On first connect, confirm the one-time access token step so the tables are created automatically.
+3. Continue to `/login` and sign in.
+
+For the deployer, environment variables are optional — they provide a default
+project and service-role fallback but are not required for per-user BYOS.
 
 ## Database and Supabase Notes
 

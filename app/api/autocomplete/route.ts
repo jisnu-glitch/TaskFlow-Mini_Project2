@@ -7,13 +7,21 @@ const getErrorMessage = (error: unknown) =>
 export async function GET(request: Request) {
     try {
         const supabase = getSupabaseForRequest(request);
-        const { data, error } = await supabase.from('autocomplete').select('*');
-        if (error) {
-            console.error('Autocomplete fetch error:', error);
-            return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
+        const { data, error } = await supabase.rpc('get_autocomplete_data');
+        if (!error && data && typeof data === 'object') {
+            return NextResponse.json(data);
         }
-        return NextResponse.json(data || []);
+
+        const [users, tasks] = await Promise.all([
+            supabase.from('users').select('skills'),
+            supabase.from('tasks').select('tags, title'),
+        ]);
+        const skills = Array.from(new Set((users.data || []).flatMap((u: any) => u.skills || [])));
+        const tags = Array.from(new Set((tasks.data || []).flatMap((t: any) => t.tags || [])));
+        const titles = (tasks.data || []).map((t: any) => t.title);
+        return NextResponse.json({ skills, tags, titles });
     } catch (error) {
+        console.error('Autocomplete fetch error:', error);
         return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }

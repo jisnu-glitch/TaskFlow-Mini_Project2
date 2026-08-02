@@ -23,10 +23,9 @@ export async function POST(request: Request) {
         const hmacKeySecret = process.env.ALTCHA_HMAC_KEY_SECRET;
 
         if (!hmacSecret) {
-            return NextResponse.json(
-                { success: false, error: 'ALTCHA_HMAC_SECRET is not configured.' },
-                { status: 500 }
-            );
+            // ALTCHA is optional. When no server secret is configured the
+            // captcha is disabled so auth still works on zero-config BYOS.
+            return NextResponse.json({ success: true });
         }
 
         if (!payload || typeof payload !== 'string') {

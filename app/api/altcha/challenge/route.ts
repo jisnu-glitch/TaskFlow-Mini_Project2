@@ -11,10 +11,13 @@ export async function GET() {
         const hmacKeySecret = process.env.ALTCHA_HMAC_KEY_SECRET;
 
         if (!hmacSecret) {
-            return NextResponse.json(
-                { error: 'ALTCHA_HMAC_SECRET is not configured.' },
-                { status: 500 }
-            );
+            // ALTCHA is optional. On zero-config BYOS deployments the captcha
+            // is disabled rather than blocking auth with a 500.
+            return NextResponse.json({ disabled: true }, {
+                headers: {
+                    'Cache-Control': 'no-store, max-age=0',
+                },
+            });
         }
 
         const challenge = await createChallenge({

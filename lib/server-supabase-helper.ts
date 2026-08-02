@@ -29,10 +29,9 @@ function getCookie(req: ReqLike, name: string): string | null {
 }
 
 export function getSupabaseForRequest(req?: ReqLike): SupabaseClient {
-  // Prefer admin client when server service role is available
-  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    return getSupabaseAdmin();
-  }
+  // Tenant-supplied keys always win so each user is served by their own
+  // Supabase project (bring-your-own-Supabase). Never let a global admin key
+  // override per-request tenant credentials.
 
   // Look for per-request headers supplied by client vault (via apiFetch)
   const headerUrl = getHeader(req, 'x-supabase-url') || getHeader(req, 'x-supabase-url'.toLowerCase());
@@ -54,6 +53,11 @@ export function getSupabaseForRequest(req?: ReqLike): SupabaseClient {
   const envAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (envUrl && envAnon) {
     return createClient(envUrl, envAnon);
+  }
+
+  // Last resort: admin client for the deployer's own default project
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return getSupabaseAdmin();
   }
 
   throw new Error('Missing SUPABASE configuration on server. Provide SUPABASE_SERVICE_ROLE_KEY or send anon keys in request headers.');

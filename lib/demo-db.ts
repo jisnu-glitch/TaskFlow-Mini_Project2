@@ -1,4 +1,5 @@
 import { Project, Task, User, ActivityLog, Message, Comment, Form, FormResponse, Document, Notification, Deployment, TimeEntry } from '@/types';
+import { assignTaskWithEngine } from './ml-engine';
 
 export function isDemoMode(): boolean {
   if (typeof window === 'undefined') return false;
@@ -1198,10 +1199,102 @@ function getDemoBottlenecks() {
   };
 }
 
+function getDemoAiAssign(title: string, description?: string) {
+  const users = getStorage<User[]>('taskflow_demo_users', DEFAULT_USERS);
+  const tasks = getStorage<Task[]>('taskflow_demo_tasks', DEFAULT_TASKS);
+  const now = new Date();
+
+  const candidates = users.map(u => {
+    const userTasks = tasks.filter(t => t.assigneeId === u.id && t.status !== 'Done');
+    return {
+      id: u.id,
+      name: u.name,
+      role: u.role,
+      skills: u.skills || [],
+      burnoutSensitivity: (u as any).burnoutSensitivity ?? 50,
+      wellness_data: {
+        active_tasks: userTasks.length,
+        high_priority_count: userTasks.filter(t => t.priority === 'High' || t.priority === 'Critical').length,
+        critical_urgency_count: userTasks.filter(t => t.dueDate && new Date(t.dueDate) <= now).length,
+      },
+    };
+  });
+
+  const result = assignTaskWithEngine({
+    title,
+    description,
+    status: 'To Do',
+    daysUntilDue: 7,
+    candidates,
+  });
+
+  const bestMatch = result.suggested_assignees[0];
+  const suggestedUser = bestMatch ? users.find(u => u.id === bestMatch.id) || null : null;
+
+  return {
+    suggestedUser,
+    candidateId: bestMatch?.id ?? null,
+    allCandidates: result.suggested_assignees.map(c => ({
+      name: c.name,
+      id: c.id,
+      score: Math.min(100, Math.round(c.combined_ranking_score)),
+      match_percentage: c.match_percentage,
+      wellness_score: c.wellness_score,
+      wellness_status: c.wellness_status,
+      risk: c.wellness_score < 40 ? 'High' : (c.wellness_score < 70 ? 'Medium' : 'Low'),
+      matchingSkills: c.matching_skills || [],
+      partialMatches: [],
+    })),
+    analysis: result.analysis,
+    mlPowered: true,
+  };
+}
+
 export async function handleDemoApiRequest(url: string, init?: RequestInit): Promise<any> {
   const urlObj = new URL(url, 'http://localhost:3000');
   const path = urlObj.pathname;
   const db = getDemoDb();
+
+  if (path.startsWith('/api/ai/assign')) {
+    const method = (init?.method || 'GET').toUpperCase();
+    if (method === 'POST') {
+      const body = JSON.parse((init?.body as string) || '{}');
+      return getDemoAiAssign(body.title || '', body.description || '');
+    }
+    return null;
+  }
+
+  if (path.startsWith('/api/users')) {
+    const method = (init?.method || 'GET').toUpperCase();
+    if (method === 'POST') {
+      const body = JSON.parse((init?.body as string) || '{}');
+      return db.addUser(body);
+    }
+    return db.getUsers();
+  }
+
+  if (path.startsWith('/api/autocomplete')) {
+    const [users, tasks] = await Promise.all([db.getUsers(), db.getTasks()]);
+    return {
+      skills: Array.from(new Set((users || []).flatMap(u => u.skills || []))),
+      tags: Array.from(new Set((tasks || []).flatMap(t => t.tags || []))),
+      titles: (tasks || []).map(t => t.title),
+    };
+  }
+
+  if (path.startsWith('/api/tasks')) {
+    const method = (init?.method || 'GET').toUpperCase();
+    if (method === 'GET') {
+      const projectId = urlObj.searchParams.get('projectId');
+      return db.getTasks(projectId || '');
+    }
+    return null;
+  }
+
+  if (/^\/api\/projects\/[^/]+\/members$/.test(path)) {
+    const projectId = path.match(/^\/api\/projects\/([^/]+)\/members$/)?.[1] || '';
+    return db.getProjectMembers(projectId);
+  }
 
   if (path.startsWith('/api/documents')) {
     const projectId = urlObj.searchParams.get('projectId');
